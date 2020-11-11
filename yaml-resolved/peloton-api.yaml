@@ -180,6 +180,13 @@ paths:
         schema:
           type: string
         example: b3f902e4b6c54777a73b61471ebed471
+      - name: joins
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       - name: page
         in: query
         required: false
@@ -203,6 +210,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResultList'
+      security:
+      - sessionCookie: []
+  /api/user/{userId}/facebook_friends:
+    get:
+      tags:
+      - users
+      description: Get Facebook friends for user by ID
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: b3f902e4b6c54777a73b61471ebed471
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: 0
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: 20
+      responses:
+        "200":
+          description: List of users with facebook profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacebookProfileList'
       security:
       - sessionCookie: []
   /api/user/{userId}/calendar:
@@ -435,6 +481,13 @@ paths:
         schema:
           type: string
         example: "5"
+      - name: joins
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         "200":
           description: Auto generated using Swagger Inspector
@@ -568,6 +621,14 @@ paths:
         schema:
           type: string
         example: b3f902e4b6c54777a73b61471ebed471
+      - name: version
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 1
       responses:
         "200":
           description: User Overview
@@ -1469,6 +1530,14 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UserProfile'
+    FacebookProfileList:
+      allOf:
+      - $ref: '#/components/schemas/ResultList'
+      - properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/FacebookUserProfile'
     UserProfile:
       properties:
         id:
@@ -1512,6 +1581,12 @@ components:
           type: number
           format: int32
           example: 300
+    FacebookUserProfile:
+      allOf:
+      - $ref: '#/components/schemas/UserProfile'
+      - properties:
+          facebook_name:
+            type: string
     Instructor:
       properties:
         id:
