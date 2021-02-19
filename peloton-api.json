@@ -1091,6 +1091,41 @@
         "tags" : [ "favorites" ]
       }
     },
+    "/api/favorites/delete" : {
+      "post" : {
+        "description" : "Remove Bookmark from a workout/ride",
+        "security" : [ {
+          "sessionCookie" : [ ]
+        }, {
+          "pelotonPlatform" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "ride_id" : {
+                    "type" : "string"
+                  }
+                }
+              },
+              "examples" : {
+                "0" : {
+                  "value" : "{\"ride_id\":\"55214456a1984c5885a087021e3f67b7\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "empty response means this was successful"
+          }
+        },
+        "tags" : [ "favorites" ]
+      }
+    },
     "/api/v2/user/subscriptions" : {
       "get" : {
         "description" : "Get My Subscriptions",
